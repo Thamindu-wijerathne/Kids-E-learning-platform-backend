@@ -1,6 +1,8 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.routes import auth_route
+from app.routes import testing_route
+from app.routes import ocr_route
 
 app = FastAPI(title="E-Learning Platform API")
 
@@ -20,7 +22,10 @@ app.add_middleware(
 
 # Include routes
 app.include_router(auth_route.router, prefix="/auth", tags=["auth"])
+app.include_router(testing_route.router, prefix="/testing", tags=["testing"])
+app.include_router(ocr_route.router, prefix="/ocr", tags=["ocr"])
 
 @app.get("/")
 def root():
     return {"message": "FastAPI running"}
+
