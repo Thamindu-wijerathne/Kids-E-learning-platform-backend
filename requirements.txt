@@ -1,0 +1,4 @@
+fastapi
+easyocr
+pymongo
+passlib
