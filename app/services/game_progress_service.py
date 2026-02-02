@@ -13,3 +13,10 @@ def update_game_progress(email: str, progress: dict):
         },
         upsert=False
     )
+
+
+def get_game_progress(email: str, game_name: str):
+    user = db.users.find_one({"email": email})
+    if not user:
+        return None
+    return user.get("game_progress", {}).get(game_name)
