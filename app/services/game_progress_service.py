@@ -8,10 +8,15 @@ def update_game_progress(email: str, progress: dict):
         {"email": email},
         {
             "$set": {
-                f"game_progress.{game}": progress
+                f"game_progress.{game}.game": progress["game"],
+                f"game_progress.{game}.level": progress["level"],
+                f"game_progress.{game}.difficulty": progress["difficulty"],
+                f"game_progress.{game}.scoreDelta": progress["scoreDelta"],
+            },
+            "$inc": {
+                f"game_progress.{game}.timeSpent": progress.get("timeSpent", 0)
             }
-        },
-        upsert=False
+        }
     )
 
 

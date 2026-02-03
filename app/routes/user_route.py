@@ -5,22 +5,38 @@ from app.db.client import db
 router = APIRouter()
 
 @router.get("/profile")
-async def get_profile(user=Depends(get_current_user)):
-    user = user["email"]
-    db.users.aggregate([
+async def get_profile(current_user=Depends(get_current_user)):
+    email = current_user["email"]
+
+    pipeline = [
+        {"$match": {"email": email}},
         {
-            "$match": {"email": user}
-        },
-        {
-            "$project": {"email": 1, "name": 1, "role": 1}
+            "$project": {
+                "_id": 0,
+                "email": 1,
+                "name": 1,
+                "role": 1,
+                "gamesArray": {
+                    "$ifNull": [
+                        {"$objectToArray": "$game_progress"},
+                        []
+                    ]
+                }
+            }
         },
         {
             "$project": {
                 "email": 1,
                 "name": 1,
+                "role": 1,
                 "totalScore": {"$sum": "$gamesArray.v.scoreDelta"},
-                "gameCount": {"$size": "$gamesArray"}
+                "totalTimeSpent": {"$sum": "$gamesArray.v.timeSpent"},
+                "gameCount": {"$size": "$gamesArray"},
+                "games": {"$ifNull": ["$game_progress", {}]}
             }
         }
-    ])
-    return user
+    ]
+
+    result = list(db.users.aggregate(pipeline))
+
+    return result[0] if result else {}

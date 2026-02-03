@@ -14,6 +14,6 @@ async def handwriting_ocr(file: UploadFile = File(...)):
         python_box = [[int(coord) for coord in point] for point in box]  # ints
         python_conf = float(conf)
         python_result.append([python_box, text, python_conf])
-        
+    
     print("python_result : ", python_result)
     return {"text": python_result}

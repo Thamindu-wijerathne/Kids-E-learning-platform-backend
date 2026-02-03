@@ -1,9 +1,10 @@
 import easyocr
 
 class OCRService:
-    def __init__(self):
-        self.reader = None
-    def get_reader(self):
-        if self.reader is None:
-            self.reader = easyocr.Reader(['en'])
-        return self.reader
+    _reader = None  # class-level (shared)
+
+    @classmethod
+    def get_reader(cls):
+        if cls._reader is None:
+            cls._reader = easyocr.Reader(['en'])
+        return cls._reader
