@@ -1,10 +1,6 @@
 import os
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
-from dotenv import load_dotenv
-
-# Load environment variables from .env file
-load_dotenv()
 
 # Get MongoDB URI from environment variable
 uri = os.getenv("MONGODB_URI")

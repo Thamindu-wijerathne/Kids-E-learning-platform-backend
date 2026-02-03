@@ -1,3 +1,8 @@
+from dotenv import load_dotenv
+
+# Load environment variables at application startup
+load_dotenv()
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.routes import auth_route
@@ -24,3 +29,4 @@ app.include_router(auth_route.router, prefix="/auth", tags=["auth"])
 @app.get("/")
 def root():
     return {"message": "FastAPI running"}
+
