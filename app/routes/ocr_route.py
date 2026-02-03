@@ -1,11 +1,12 @@
 import easyocr
 from fastapi import APIRouter, File, UploadFile
+from app.services.ocr_service import OCRService
 
 router = APIRouter()
 
 @router.post("/handwriting-ocr")
 async def handwriting_ocr(file: UploadFile = File(...)):
-    reader = easyocr.Reader(['en'])
+    reader = OCRService().get_reader()
     result = reader.readtext(file.file.read())
     # Convert numpy types to Python native types
     python_result = []
