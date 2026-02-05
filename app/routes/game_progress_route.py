@@ -1,17 +1,18 @@
 from fastapi import APIRouter, HTTPException, Depends
 from app.utils.jwt import get_current_user
-from app.services.game_progress_service import update_game_progress, get_game_progress
+from app.services.game_progress_service import (
+    update_game_progress, 
+    get_game_progress,
+    update_word_builder_progress
+)
 
 router = APIRouter()
 
-@router.post("/save-progress")
-def save_progress(progress: dict, user=Depends(get_current_user)):
+@router.post("/save-progress/word-builder")
+def save_word_builder_progress(progress: dict, user=Depends(get_current_user)):
     email = user["email"]
-    update_game_progress(email, progress)
-    # print("email : ", email)
-    # print("progress : ", progress)
-
-    return {"message": "Progress saved successfully"}
+    update_word_builder_progress(email, progress)
+    return {"message": "Word Builder progress saved successfully"}
 
 @router.get("/get-progress/{game_name}")
 def get_progress(game_name: str, user=Depends(get_current_user)):
