@@ -8,6 +8,12 @@ from app.services.game_progress_service import (
 
 router = APIRouter()
 
+@router.post("/save-progress")
+def save_progress(progress: dict, user=Depends(get_current_user)):
+    email = user["email"]
+    update_game_progress(email, progress)
+    return {"message": "Progress saved successfully"}
+
 @router.post("/save-progress/word-builder")
 def save_word_builder_progress(progress: dict, user=Depends(get_current_user)):
     email = user["email"]
