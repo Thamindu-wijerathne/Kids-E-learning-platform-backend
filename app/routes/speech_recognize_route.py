@@ -5,7 +5,7 @@ from app.services.speech_regocnition import SpeechRecognitionService
 router = APIRouter()
 
 
-@router.post("/speech-recognize-test")
+@router.post("/speech-recognize-word")
 async def speech_recognize(file: UploadFile = File(...)):
     audio_bytes = await file.read()
     
@@ -16,5 +16,7 @@ async def speech_recognize(file: UploadFile = File(...)):
     
     print("file : ", file)
     segments  = SpeechRecognitionService().transcribe(m4a_stream)
-    print("result : ", segments)
-    return {"text": "segments"}
+    firstword = segments[0].text if segments else "Not recognized"
+    
+    print("result : ", firstword)
+    return {"text": firstword}
