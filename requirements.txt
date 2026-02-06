@@ -3,3 +3,5 @@ easyocr
 pymongo
 passlib
 python-dotenv
+uvicorn
+python-jose
