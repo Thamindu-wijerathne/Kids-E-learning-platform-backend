@@ -1,23 +1,62 @@
-# Python cache
+# === Python bytecode ===
 __pycache__/
-*.pyc
+*.py[cod]
 *.pyo
 *.pyd
 
-# Virtual environments
+# === Virtual environments ===
 venv/
-env/
 .venv/
+env/
+ENV/
+conda/
+*.egg-info/
 
-# VS Code
-.vscode/
-
-# Environment variables
+# === Env / secrets ===
 .env
+.env.*
+!.env.example
 
-# Logs
+# === Logs ===
 *.log
+logs/
 
-# OS files
+# === Builds / packaging ===
+build/
+dist/
+pip-wheel-metadata/
+.eggs/
+wheels/
+
+# === Test / coverage ===
+.pytest_cache/
+.coverage
+coverage.xml
+htmlcov/
+.tox/
+.nox/
+
+# === Type checker / linter caches ===
+.mypy_cache/
+.pyre/
+.ruff_cache/
+
+# === Jupyter ===
+.ipynb_checkpoints/
+
+# === IDEs / OS ===
+.vscode/
+.idea/
 .DS_Store
 Thumbs.db
+
+# === FastAPI / Uvicorn ===
+*.pid
+
+# === Django (if you use it) ===
+*.sqlite3
+db.sqlite3
+media/
+
+# === Local configs ===
+*.local
