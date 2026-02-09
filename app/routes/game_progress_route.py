@@ -24,6 +24,12 @@ def save_word_builder_progress(progress: dict, user=Depends(get_current_user)):
     update_word_builder_progress(email, progress)
     return {"message": "Word Builder progress saved successfully"}
 
+@router.post("/save-progress/speech-explorer")
+def save_speech_explorer_progress(progress: dict, user=Depends(get_current_user)):
+    email = user["email"]
+    update_speech_explorer_progress(email, progress)
+    return {"message": "Speech Explorer progress saved successfully"}
+
 @router.get("/get-progress/{game_name}")
 def get_progress(game_name: str, user=Depends(get_current_user)):
     email = user["email"]

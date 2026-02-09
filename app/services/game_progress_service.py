@@ -38,6 +38,26 @@ def update_word_builder_progress(email: str, progress: dict):
             }
         }
     )
+    
+def update_speech_explorer_progress(email: str, progress: dict):
+    game = "Speech Explorer"
+    db.users.update_one(
+        {"email": email},
+        {
+            "$set": {
+                f"game_progress.{game}.game": game,
+                f"game_progress.{game}.level": progress["level"],
+                f"game_progress.{game}.score": progress["score"],
+                f"game_progress.{game}.targetWord": progress.get("targetWord"),
+                f"game_progress.{game}.recognizedText": progress.get("recognizedText"),
+                f"game_progress.{game}.index": progress.get("index"),
+                f"game_progress.{game}.lastPlayed": datetime.now(),
+            },
+            # "$inc": {
+            #     f"game_progress.{game}.timeSpent": progress.get("timeSpent", 0)
+            # }
+        }
+    )
 
 def get_game_progress(email: str, game_name: str):
     user = db.users.find_one({"email": email})
