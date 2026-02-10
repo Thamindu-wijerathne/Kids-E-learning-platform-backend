@@ -6,4 +6,5 @@ class UserModel(TypedDict):
     email: str
     password: str  # hashed
     avatar: str
+    age_group: str
     age: int  # optional

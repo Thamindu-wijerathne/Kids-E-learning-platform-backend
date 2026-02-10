@@ -3,7 +3,7 @@ from passlib.context import CryptContext
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
-def create_user(name: str, email: str, password: str):
+def create_user(name: str, email: str, password: str, age_group: str):
     if db.users.find_one({"email": email}):
         raise ValueError("User already exists")
 
@@ -12,13 +12,15 @@ def create_user(name: str, email: str, password: str):
     result = db.users.insert_one({
         "name": name,
         "email": email,
-        "password": hashed_password
+        "password": hashed_password,
+        "age_group": age_group
     })
 
     return {
         "id": str(result.inserted_id),
         "name": name,
-        "email": email
+        "email": email,
+        "age_group": age_group
     }
 
 def authenticate_user(email: str, password: str):
@@ -32,5 +34,6 @@ def authenticate_user(email: str, password: str):
     return {
         "id": str(user["_id"]),
         "name": user["name"],
-        "email": user["email"]
+        "email": user["email"],
+        "age_group": user.get("age_group")
     }
