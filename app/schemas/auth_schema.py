@@ -9,6 +9,7 @@ class UserResponse(BaseModel):
     id: str
     name: str
     email: str
+    age_group: str
     avatar: Optional[str] = None
 
 class LoginResponse(BaseModel):
@@ -18,6 +19,7 @@ class LoginResponse(BaseModel):
 class SignupRequest(BaseModel):
     name: str
     email: str
+    age_group: str
     password: str
 
 class SignupResponse(BaseModel):

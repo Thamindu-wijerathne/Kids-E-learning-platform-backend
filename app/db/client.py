@@ -1,13 +1,10 @@
-
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
-
-uri = "mongodb+srv://thamindu12ku_db_user:pzF5HbkOqp1b0TfM@cluster0.toq5w4t.mongodb.net/?appName=Cluster0"
-
+from app.config import MONGODB_URI, DB_NAME
 
 # Create a new client and connect to the server
-client = MongoClient(uri, server_api=ServerApi('1'))
-db = client["e_learning_platform"]
+client = MongoClient(MONGODB_URI, server_api=ServerApi('1'))
+db = client[DB_NAME]
 
 # Send a ping to confirm a successful connection
 try:
