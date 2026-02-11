@@ -8,9 +8,16 @@ from app.services.game_progress_service import (
     get_score,
     save_level,
     save_score,
+    get_all_game_progress
 )
 
 router = APIRouter()
+
+@router.get("/get-progress/all")
+def get_all_progress(user=Depends(get_current_user)):
+    email = user["email"]
+    progress = get_all_game_progress(email)
+    return progress
 
 @router.post("/save-progress")
 def save_progress(progress: dict, user=Depends(get_current_user)):

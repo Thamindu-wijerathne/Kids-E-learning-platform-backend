@@ -1,5 +1,18 @@
+import email
 from app.db.client import db
 from datetime import datetime
+
+from app.models import user
+
+def get_all_game_progress(email: str):
+    print("Getting all game progress for email:", email)
+    userGameProgress = db.users.find_one(
+        {"email": email},
+        {"_id": 0, "games": 1}   
+    )
+    if not userGameProgress:
+        return {}
+    return userGameProgress.get("games", {})
 
 def update_game_progress(email: str, progress: dict):
     game = progress["game"]
