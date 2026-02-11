@@ -15,10 +15,9 @@ async def get_profile(current_user=Depends(get_current_user)):
                 "_id": 0,
                 "email": 1,
                 "name": 1,
-                "role": 1,
                 "gamesArray": {
                     "$ifNull": [
-                        {"$objectToArray": "$game_progress"},
+                        {"$objectToArray": "$games"},
                         []
                     ]
                 }
@@ -28,11 +27,26 @@ async def get_profile(current_user=Depends(get_current_user)):
             "$project": {
                 "email": 1,
                 "name": 1,
-                "role": 1,
-                "totalScore": {"$sum": "$gamesArray.v.scoreDelta"},
-                "totalTimeSpent": {"$sum": "$gamesArray.v.timeSpent"},
                 "gameCount": {"$size": "$gamesArray"},
-                "games": {"$ifNull": ["$game_progress", {}]}
+                "games": {"$ifNull": ["$games", {}]},
+                "totalScore": {
+                    "$sum": {
+                        "$map": {
+                        "input": "$gamesArray",
+                        "as": "g",
+                        "in": {
+                            "$ifNull": [
+                            "$$g.v.scores.totalScore",
+                            { "$ifNull": [
+                                "$$g.v.scores.highScore",
+                                { "$ifNull": ["$$g.v.scores.lastScore", 0] }
+                            ]}
+                            ]
+                        }
+                        }
+                    }
+                }
+
             }
         }
     ]
