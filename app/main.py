@@ -14,6 +14,7 @@ app = FastAPI(title="E-Learning Platform API")
 origins = [
     "http://localhost:3000",  # Next.js dev server
     "http://127.0.0.1:3000",
+    "http://34.47.219.216:3000"
 ]
 
 app.add_middleware(
