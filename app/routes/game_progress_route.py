@@ -1,17 +1,24 @@
+from dataclasses import Field
 from fastapi import APIRouter, HTTPException, Depends
+from pydantic import BaseModel, Field
 from app.utils.jwt import get_current_user
 from app.services.game_progress_service import (
     update_game_progress, 
     get_game_progress,
-    update_word_builder_progress,
     get_level,
     get_score,
     save_level,
     save_score,
-    get_all_game_progress
+    get_all_game_progress,
+    update_time_spent
 )
 
 router = APIRouter()
+
+class TimeSpentReq(BaseModel):
+    game: str
+    timeSpent: int = Field(ge=0)
+
 
 @router.get("/get-progress/all")
 def get_all_progress(user=Depends(get_current_user)):
@@ -25,17 +32,6 @@ def save_progress(progress: dict, user=Depends(get_current_user)):
     update_game_progress(email, progress)
     return {"message": "Progress saved successfully"}
 
-@router.post("/save-progress/word-builder")
-def save_word_builder_progress(progress: dict, user=Depends(get_current_user)):
-    email = user["email"]
-    update_word_builder_progress(email, progress)
-    return {"message": "Word Builder progress saved successfully"}
-
-@router.post("/save-progress/speech-explorer")
-def save_speech_explorer_progress(progress: dict, user=Depends(get_current_user)):
-    email = user["email"]
-    update_speech_explorer_progress(email, progress)
-    return {"message": "Speech Explorer progress saved successfully"}
 
 @router.get("/get-progress/{game_name}")
 def get_progress(game_name: str, user=Depends(get_current_user)):
@@ -77,6 +73,8 @@ def get_game_level(game_id: str, user=Depends(get_current_user)):
     email = user["email"]
     return get_level(email, game_id)
 
-
-
-
+@router.post("/time")
+def save_game_time(req: TimeSpentReq, user=Depends(get_current_user)):
+    email = user["email"]
+    update_time_spent(email, req.game, req.timeSpent)
+    return {"message": "Time spent saved successfully"}
