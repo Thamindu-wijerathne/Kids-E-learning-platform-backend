@@ -1,8 +1,23 @@
 from fastapi import APIRouter, Depends
 from app.utils.jwt import get_current_user
 from app.db.client import db
+from app.schemas.user_schema import CustomizationRequest
 
 router = APIRouter()
+
+@router.put("/customizations")
+async def update_customizations(data: CustomizationRequest, current_user=Depends(get_current_user)):
+    email = current_user["email"]
+    update_data = {k: v for k, v in data.dict().items() if v is not None}
+    
+    if update_data:
+        set_fields = {f"customizations.{k}": v for k, v in update_data.items()}
+        db.users.update_one(
+            {"email": email},
+            {"$set": set_fields}
+        )
+    
+    return {"status": "success", "message": "Customizations updated"}
 
 @router.get("/profile")
 async def get_profile(current_user=Depends(get_current_user)):
@@ -15,6 +30,7 @@ async def get_profile(current_user=Depends(get_current_user)):
                 "_id": 0,
                 "email": 1,
                 "name": 1,
+                "customizations": {"$ifNull": ["$customizations", {}]},
                 "gamesArray": {
                     "$ifNull": [
                         {"$objectToArray": "$games"},
@@ -27,6 +43,7 @@ async def get_profile(current_user=Depends(get_current_user)):
             "$project": {
                 "email": 1,
                 "name": 1,
+                "customizations": 1,
                 "gameCount": {"$size": "$gamesArray"},
                 "games": {"$ifNull": ["$games", {}]},
                 "totalScore": {
