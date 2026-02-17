@@ -7,6 +7,7 @@ from app.routes import game_progress_route
 from app.routes import user_route
 from app.routes import speech_recognize_route
 from app.routes import speech_recognize_route
+from app.routes import chat_route
 
 app = FastAPI(title="E-Learning Platform API")
 
@@ -32,6 +33,7 @@ app.include_router(ocr_route.router, prefix="/api/ocr", tags=["ocr"])
 app.include_router(game_progress_route.router, prefix="/api/game-progress", tags=["game-progress"])
 app.include_router(user_route.router, prefix="/api/user", tags=["user"])
 app.include_router(speech_recognize_route.router, prefix="/api/speech-recognize", tags=["speech-recognize"])
+app.include_router(chat_route.router, prefix="/api/chat", tags=["chat"])
 
 @app.get("/")
 def root():
