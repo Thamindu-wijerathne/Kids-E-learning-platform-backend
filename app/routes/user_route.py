@@ -45,8 +45,16 @@ async def get_profile(current_user=Depends(get_current_user)):
                         }
                         }
                     }
+                },
+                "totalTimeSpent": {
+                    "$sum": {
+                        "$map": {
+                            "input": "$gamesArray",
+                            "as": "g",
+                            "in": { "$ifNull": ["$$g.v.timeSpent", 0] }
+                        }
+                    }
                 }
-
             }
         }
     ]

@@ -26,12 +26,12 @@ app.add_middleware(
 )
 
 # Include routes
-app.include_router(auth_route.router, prefix="/auth", tags=["auth"])
-app.include_router(testing_route.router, prefix="/testing", tags=["testing"])
-app.include_router(ocr_route.router, prefix="/ocr", tags=["ocr"])
-app.include_router(game_progress_route.router, prefix="/game-progress", tags=["game-progress"])
-app.include_router(user_route.router, prefix="/user", tags=["user"])
-app.include_router(speech_recognize_route.router, prefix="/speech-recognize", tags=["speech-recognize"])
+app.include_router(auth_route.router, prefix="/api/auth", tags=["auth"])
+app.include_router(testing_route.router, prefix="/api/testing", tags=["testing"])
+app.include_router(ocr_route.router, prefix="/api/ocr", tags=["ocr"])
+app.include_router(game_progress_route.router, prefix="/api/game-progress", tags=["game-progress"])
+app.include_router(user_route.router, prefix="/api/user", tags=["user"])
+app.include_router(speech_recognize_route.router, prefix="/api/speech-recognize", tags=["speech-recognize"])
 
 @app.get("/")
 def root():
